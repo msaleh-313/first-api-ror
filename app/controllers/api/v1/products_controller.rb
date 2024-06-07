@@ -22,6 +22,14 @@ class Api::V1::ProductsController < ApplicationController
     end
   end
 
+  def update
+    @product=Product.find_by(id: params[:id])
+    if @product.update(prod_params)
+      render json: @product, status:200
+    else
+      render json:{error: "Product not updated",messages: @product.errors.full_messages } ,status: 422
+    end
+  end
   private
   def prod_params
     params.require(:product).permit(:name,:brand,:price)
